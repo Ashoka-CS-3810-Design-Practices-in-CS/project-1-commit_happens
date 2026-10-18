@@ -46,7 +46,3 @@ src/
   registry.ts    the list of installed structure modules
 tests/           Vitest suites: structures, playback controller, static tables
 ```
-
-Full documentation (architecture, algorithms, what was built and why) lives in
-[`../artifacts/`](../artifacts/) — see `PROJECT_DOCUMENTATION.md` and
-`WHAT_WAS_BUILT.md`.
