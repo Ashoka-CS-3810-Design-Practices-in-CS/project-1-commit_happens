@@ -93,8 +93,6 @@ export function Workspace({ module, onNavigate }: Props) {
           </div>
           <div className="titlebar-right">
             <button type="button" className="win-btn" title="Help & legend" onClick={() => setHelpOpen(true)}>?</button>
-            <span className="win-btn deco">_</span>
-            <span className="win-btn deco">□</span>
             <button type="button" className="win-btn close" title="Back to topics" onClick={() => onNavigate(null)}>✕</button>
           </div>
         </div>
