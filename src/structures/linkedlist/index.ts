@@ -9,7 +9,7 @@ export const linkedListModule: StructureModule<ListModel> = {
   title: 'Linked List',
   tag: 'NODE_CHAIN',
   category: 'linear',
-  blurb: 'Nodes joined by next pointers. No random access — every walk is visible.',
+  blurb: 'A chain of nodes, each holding a value and a pointer to the next one',
   chips: ['Singly linked', '*next ptr', 'dynamic'],
   headline: 'O(N)',
   create,
