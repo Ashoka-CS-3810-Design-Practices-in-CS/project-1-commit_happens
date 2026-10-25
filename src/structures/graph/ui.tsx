@@ -210,7 +210,7 @@ export function Controls({ model, locked, run }: ControlsProps<GraphModel>) {
         </div>
         <OpButton label="BFS — breadth first" hint="queue" disabled={locked} onClick={() => run('bfs', { source, target })} />
         <OpButton label="DFS — depth first" hint="stack" disabled={locked} onClick={() => run('dfs', { source, target })} />
-        <OpButton label="Dijkstra — cheapest path" hint="weights" disabled={locked} onClick={() => run('dijkstra', { source, target })} />
+        <OpButton label="Dijkstra — shortest path" hint="weights" disabled={locked} onClick={() => run('dijkstra', { source, target })} />
       </PanelSection>
     </>
   );
