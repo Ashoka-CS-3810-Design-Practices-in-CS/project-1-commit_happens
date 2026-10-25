@@ -69,6 +69,13 @@ export function View({ snapshot, step }: ViewProps<GraphModel>) {
               />
             );
           })}
+          {snapshot.edges.map(e => {
+            const a = pos.get(e.a)!;
+            const b = pos.get(e.b)!;
+            return (
+              <text key={'w' + e.id} x={(a.x + b.x) / 2} y={(a.y + b.y) / 2 - 5} textAnchor="middle" style={{ fontSize: 12, fontWeight: 700, fill: 'var(--blue)', paintOrder: 'stroke', stroke: 'var(--paper)', strokeWidth: 4 }}>{e.weight ?? 1}</text>
+            );
+          })}
           {snapshot.vertices.map(v => {
             const p = pos.get(v)!;
             return (
@@ -100,6 +107,7 @@ export function Controls({ model, locked, run }: ControlsProps<GraphModel>) {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [directed, setDirected] = useState(false);
+  const [weight, setWeight] = useState('1');
   const [source, setSource] = useState('');
   const [target, setTarget] = useState('');
   const vs = model.vertices;
@@ -129,8 +137,9 @@ export function Controls({ model, locked, run }: ControlsProps<GraphModel>) {
             {sel(from, setFrom, 'edge-from', 'u')}
             <span className="op-hint">{directed ? '→' : '–'}</span>
             {sel(to, setTo, 'edge-to', 'v')}
+            <input id="edge-weight" type="number" min={1} placeholder="w" title="edge weight" style={{ width: 52 }} value={weight} disabled={locked} onChange={e => setWeight(e.target.value)} />
             <button type="button" className="primary-btn" disabled={locked}
-              onClick={() => run('addEdge', { from, to, directed: directed ? '1' : '' })}>Add</button>
+              onClick={() => run('addEdge', { from, to, directed: directed ? '1' : '', weight })}>Add</button>
           </div>
           <label className="check-row">
             <input id="edge-directed" type="checkbox" checked={directed} disabled={locked} onChange={e => setDirected(e.target.checked)} />
@@ -156,6 +165,7 @@ export function Controls({ model, locked, run }: ControlsProps<GraphModel>) {
         </div>
         <OpButton label="BFS — breadth first" hint="queue" disabled={locked} onClick={() => run('bfs', { source, target })} />
         <OpButton label="DFS — depth first" hint="stack" disabled={locked} onClick={() => run('dfs', { source, target })} />
+        <OpButton label="Dijkstra — cheapest path" hint="weights" disabled={locked} onClick={() => run('dijkstra', { source, target })} />
       </PanelSection>
     </>
   );

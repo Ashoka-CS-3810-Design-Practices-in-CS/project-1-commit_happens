@@ -56,6 +56,7 @@ export const COMPLEXITY_TABLE: Record<string, Record<string, Complexity>> = {
     addEdge:      { worst: 'O(1)', space: 'O(1)', note: 'Append to adjacency list' },
     removeVertex: { worst: 'O(V+E)', space: 'O(1)', note: 'Must drop every incident edge' },
     removeEdge:   { worst: 'O(deg)', space: 'O(1)' },
+    dijkstra:     { worst: 'O(V²)', space: 'O(V)', note: 'Scans for the closest vertex each round; a min-heap gives O((V+E) log V)' },
     bfs:          { worst: 'O(V+E)', space: 'O(V)', note: 'Every vertex enqueued at most once' },
     dfs:          { worst: 'O(V+E)', space: 'O(V)', note: 'Explicit stack instead of recursion' },
   },

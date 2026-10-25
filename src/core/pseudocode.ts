@@ -146,6 +146,16 @@ export const PSEUDOCODE: Record<string, Record<string, string[]>> = {
     addEdge: ['addEdge(u, v):', '  adjacency[u].append(v)', '  if undirected: adjacency[v].append(u)'],
     removeVertex: ['removeVertex(v):', '  delete adjacency[v]', '  remove v from every other list'],
     removeEdge: ['removeEdge(u, v):', '  remove v from adjacency[u]', '  if undirected: remove u from adjacency[v]'],
+    dijkstra: [
+      'Dijkstra(start):',
+      '  dist[all] = ∞; dist[start] = 0',
+      '  while unfinished vertices remain:',
+      '    u = unfinished vertex with smallest dist',
+      '    mark u finished',
+      '    for each edge (u, v) with weight w:',
+      '      if dist[u] + w < dist[v]:',
+      '        dist[v] = dist[u] + w; prev[v] = u',
+    ],
     bfs: [
       'BFS(start):',
       '  visited = {start}; queue = [start]',

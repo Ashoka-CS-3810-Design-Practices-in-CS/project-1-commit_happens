@@ -124,10 +124,9 @@ function Card({ m, onOpen }: { m: StructureModule<any>; onOpen: (id: string) => 
         <div className="card-preview"><MiniPreview id={m.id} /></div>
         <h2>{m.title}</h2>
         <p className="card-blurb">{m.blurb}</p>
-        <div className="card-chips">{m.chips.map(c => <span key={c} className="chip">{c}</span>)}</div>
       </div>
       <div className="card-foot">
-        <button type="button" className="enter-btn" onClick={() => onOpen(m.id)}>[ Enter ]</button>
+        <button type="button" className="enter-btn" onClick={() => onOpen(m.id)}>Enter</button>
       </div>
     </article>
   );

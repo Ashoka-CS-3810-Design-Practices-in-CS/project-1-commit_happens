@@ -52,7 +52,7 @@ export const operations: Operation<GraphModel>[] = [
       const directed = args.directed === '1';
       const next = snap(m);
       const id = `ge${next.eid++}`;
-      next.edges.push({ id, a: args.from, b: args.to, directed });
+      next.edges.push({ id, a: args.from, b: args.to, directed, weight: Number.isInteger(Number(args.weight)) && Number(args.weight) > 0 ? Number(args.weight) : 1 });
       const steps: Step<GraphModel>[] = [
         {
           type: 'commit', pcLine: directed ? 2 : 3, snapshot: snap(next),
@@ -105,6 +105,98 @@ export const operations: Operation<GraphModel>[] = [
         { type: 'commit', pcLine: 3, snapshot: snap(next), highlight: [], message: 'edge removed from the adjacency list(s)' },
       ];
       return { steps, next };
+    },
+  },
+  {
+    key: 'dijkstra',
+    label: 'Dijkstra(source)',
+    mutates: false,
+    validate: traversalValidate,
+    run(m, args) {
+      const start = args.source;
+      const target = args.target || null;
+      const steps: Step<GraphModel>[] = [];
+      const weightOf = (id: string) => m.edges.find(e => e.id === id)?.weight ?? 1;
+      const dist = new Map<string, number>();
+      const prevEdge = new Map<string, string>();
+      const prevVertex = new Map<string, string>();
+      for (const v of m.vertices) dist.set(v, Infinity);
+      dist.set(start, 0);
+      const done: string[] = [];
+      const treeEdges: string[] = [];
+      const show = (v: string) => (dist.get(v) === Infinity ? '∞' : String(dist.get(v)));
+      const table = () => m.vertices.map(v => `${v}=${show(v)}`).join(', ');
+
+      steps.push({
+        type: 'info', pcLine: 2, snapshot: snap(m), highlight: [], frontier: [start],
+        message: `dist: ${table()} — Dijkstra always finalises the closest unfinished vertex`,
+      });
+
+      let found = false;
+      while (!found) {
+        let u: string | null = null;
+        for (const v of m.vertices) {
+          if (done.includes(v) || dist.get(v) === Infinity) continue;
+          if (u === null || dist.get(v)! < dist.get(u)!) u = v;
+        }
+        if (u === null) break;
+        done.push(u);
+        const via = prevEdge.get(u);
+        if (via) treeEdges.push(via);
+        const improved: string[] = [];
+        for (const nb of neighbours(m, u)) {
+          if (done.includes(nb.to)) continue;
+          const cand = dist.get(u)! + weightOf(nb.eid);
+          if (cand < dist.get(nb.to)!) {
+            dist.set(nb.to, cand);
+            prevEdge.set(nb.to, nb.eid);
+            prevVertex.set(nb.to, u);
+            improved.push(`${nb.to}=${cand}`);
+          }
+        }
+        const frontier = m.vertices.filter(v => !done.includes(v) && dist.get(v)! < Infinity);
+        steps.push({
+          type: 'visit', pcLine: 6, snapshot: snap(m),
+          highlight: [u],
+          visited: done.slice(0, -1),
+          frontier,
+          edges: [...treeEdges],
+          order: [...done],
+          message:
+            `finalise ${u} at cost ${show(u)}` +
+            (improved.length ? `; shorter routes found: ${improved.join(', ')}` : '; nothing improved') +
+            ` — dist: ${table()}`,
+        });
+        if (target && u === target) found = true;
+      }
+
+      const pathVertices: string[] = [];
+      const pathEdges: string[] = [];
+      if (target && found) {
+        let cur: string | undefined = target;
+        while (cur) {
+          pathVertices.unshift(cur);
+          const e = prevEdge.get(cur);
+          if (e) pathEdges.unshift(e);
+          cur = prevVertex.get(cur);
+        }
+      }
+
+      let message: string;
+      let error = false;
+      if (target && found) {
+        message = `cheapest route ${pathVertices.join(' → ')} costs ${show(target)}`;
+      } else if (target) {
+        message = `${target} is UNREACHABLE from ${start} — no route exists. Final dist: ${table()}`;
+        error = true;
+      } else {
+        message = `Dijkstra complete — cheapest cost from ${start}: ${table()}`;
+      }
+      steps.push({
+        type: 'info', pcLine: 3, snapshot: snap(m), highlight: [],
+        visited: done, edges: found ? pathEdges : treeEdges, order: found ? pathVertices : done, error, message,
+      });
+      return { steps, next: snap(m) };
     },
   },
   {

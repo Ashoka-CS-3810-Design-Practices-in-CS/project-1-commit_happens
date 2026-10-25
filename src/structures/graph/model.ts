@@ -9,6 +9,7 @@ export interface GraphEdge {
   a: string;
   b: string;
   directed: boolean;
+  weight?: number;
 }
 
 export interface GraphModel {
@@ -41,7 +42,7 @@ export const random = (): GraphModel => {
   // a random connected backbone, then a few extra edges
   for (let i = 1; i < names.length; i++) {
     const j = randInt(0, i - 1);
-    m.edges.push({ id: `ge${m.eid++}`, a: names[j], b: names[i], directed: false });
+    m.edges.push({ id: `ge${m.eid++}`, a: names[j], b: names[i], directed: false, weight: randInt(1, 9) });
   }
   let extras = 2;
   let guard = 20;
@@ -49,7 +50,7 @@ export const random = (): GraphModel => {
     const a = names[randInt(0, names.length - 1)];
     const b = names[randInt(0, names.length - 1)];
     if (a !== b && !hasEdge(m, a, b)) {
-      m.edges.push({ id: `ge${m.eid++}`, a, b, directed: false });
+      m.edges.push({ id: `ge${m.eid++}`, a, b, directed: false, weight: randInt(1, 9) });
       extras--;
     }
   }

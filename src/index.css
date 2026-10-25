@@ -554,3 +554,42 @@ svg.mini .mini-edge.dashed { stroke-dasharray: 3 3; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* ---------- dark mode ---------- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #e8e6e3;
+  --bg: #1a1b1e;
+  --bg-page: #121316;
+  --paper: #1c1d21;
+  --paper-2: #212227;
+  --paper-3: #26272c;
+  --paper-4: #2d2e34;
+  --dim: #0d0e10;
+  --line: #3a3d52;
+  --outline: #8a8da3;
+  --muted: #a3a1a1;
+  --blue: #8fa8ff;
+  --blue-bright: #7b9bff;
+  --blue-fixed: #1e2a55;
+  --blue-dim: #34457f;
+  --on-blue: #0b1330;
+  --error: #ff7b7b;
+  --error-bg: #4a1d1d;
+  --ok: #34d399;
+  --shadow: 3px 3px 0 var(--outline);
+}
+:root[data-theme="dark"] .win-btn.close:hover { color: #1a0505; }
+:root[data-theme="dark"] .mark-error { color: #1a0505 !important; }
+:root[data-theme="dark"] .svg-node.mark-error text { fill: #1a0505; }
+:root[data-theme="dark"] .pc-line.active .pc-num { background: var(--blue); color: var(--on-blue); }
+:root[data-theme="dark"] .pc-marker { background: var(--blue-fixed); color: var(--blue); }
+
+.theme-toggle {
+  position: fixed; right: 16px; bottom: 56px; z-index: 100;
+  font: 700 11px var(--font-code); text-transform: uppercase; letter-spacing: 0.04em;
+  padding: 6px 10px;
+  color: var(--ink); background: var(--paper);
+  border: 2px solid var(--ink); box-shadow: var(--shadow);
+}
+.theme-toggle:hover { background: var(--blue); color: var(--on-blue); }
