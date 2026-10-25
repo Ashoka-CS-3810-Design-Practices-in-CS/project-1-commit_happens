@@ -9,7 +9,7 @@ export const stackModule: StructureModule<StackModel> = {
   title: 'Stack',
   tag: 'LIFO_BUFFER',
   category: 'linear',
-  blurb: 'Array-backed, last in first out. Push and pop touch only the top.',
+  blurb: 'A pile where you can only add or remove at the top. The last item in is the first out, like a stack of plates',
   chips: ['LIFO', 'push / pop', 'call-stack'],
   headline: 'O(1)',
   create,
