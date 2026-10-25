@@ -9,7 +9,7 @@ export const bstModule: StructureModule<BstModel> = {
   title: 'Binary Search Tree',
   tag: 'TREE_SEARCH',
   category: 'tree',
-  blurb: 'Every comparison discards half the tree. Watch the path — it is the cost.',
+  blurb: 'A binary tree wherein each node has at most two children and smaller values go left while larger go right',
   chips: ['BST', 'in-order walk', '3-case delete'],
   headline: 'O(log N)',
   create,
