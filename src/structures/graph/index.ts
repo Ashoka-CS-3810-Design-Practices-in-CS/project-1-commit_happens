@@ -9,7 +9,7 @@ export const graphModule: StructureModule<GraphModel> = {
   title: 'Graph',
   tag: 'ADJACENCY_NET',
   category: 'graphs',
-  blurb: 'Build it vertex by vertex, then watch BFS and DFS claim it.',
+  blurb: 'Points or vertices joined by connections or edges'
   chips: ['BFS / DFS', 'adjacency list', 'directed + undirected'],
   headline: 'O(V+E)',
   create,
