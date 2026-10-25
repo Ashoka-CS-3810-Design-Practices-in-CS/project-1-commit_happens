@@ -593,3 +593,24 @@ svg.mini .mini-edge.dashed { stroke-dasharray: 3 3; }
   border: 2px solid var(--ink); box-shadow: var(--shadow);
 }
 .theme-toggle:hover { background: var(--blue); color: var(--on-blue); }
+
+/* ---------- graph: adjacency list + edge list ---------- */
+.graph-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+@media (max-width: 640px) { .graph-lists { grid-template-columns: 1fr; } }
+.graph-list {
+  border: 1px solid var(--ink); background: var(--paper);
+  padding: 8px 10px; font: 500 12px var(--font-code);
+  max-height: 180px; overflow: auto;
+}
+.graph-row { display: flex; gap: 6px; padding: 1px 4px; }
+.graph-row.hot { background: var(--blue-fixed); color: var(--blue); }
+.graph-key { font-weight: 700; min-width: 3ch; }
+.graph-list .hot { color: var(--blue); font-weight: 700; }
+
+.lists-toggle-row { margin-top: 10px; }
+.lists-toggle {
+  font: 700 11px var(--font-code); text-transform: uppercase; letter-spacing: 0.04em;
+  padding: 5px 10px; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--ink); box-shadow: 2px 2px 0 var(--ink);
+}
+.lists-toggle:hover { background: var(--blue); color: var(--on-blue); }

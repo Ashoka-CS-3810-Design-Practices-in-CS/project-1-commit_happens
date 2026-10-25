@@ -42,8 +42,50 @@ function useForceLayout(m: GraphModel) {
   }, [key]);
 }
 
+function GraphLists({ m, step }: { m: GraphModel; step: ViewProps<GraphModel>['step'] }) {
+  const hotV = new Set(step?.highlight ?? []);
+  const hotE = new Set(step?.edges ?? []);
+  const wt = (e: GraphModel['edges'][number]) => e.weight ?? 1;
+  const adj = m.vertices.map(v => ({
+    v,
+    out: m.edges.flatMap(e =>
+      e.a === v ? [{ to: e.b, w: wt(e), id: e.id }]
+      : !e.directed && e.b === v ? [{ to: e.a, w: wt(e), id: e.id }]
+      : []),
+  }));
+  return (
+    <div className="graph-lists">
+      <div className="graph-list">
+        <div className="memory-label">adjacency list</div>
+        {adj.map(({ v, out }) => (
+          <div key={v} className={'graph-row' + (hotV.has(v) ? ' hot' : '')}>
+            <span className="graph-key">{v}</span>
+            <span>→</span>
+            <span>
+              {out.length === 0 ? '∅' : out.map((o, i) => (
+                <span key={o.id} className={hotE.has(o.id) ? 'hot' : ''}>
+                  {(i > 0 ? ', ' : '') + o.to + '(' + o.w + ')'}
+                </span>
+              ))}
+            </span>
+          </div>
+        ))}
+      </div>
+      <div className="graph-list">
+        <div className="memory-label">edge list</div>
+        {m.edges.length === 0 ? <div className="graph-row">∅</div> : m.edges.map(e => (
+          <div key={e.id} className={'graph-row' + (hotE.has(e.id) ? ' hot' : '')}>
+            {`(${e.a}, ${e.b}, w=${wt(e)})${e.directed ? '  directed' : ''}`}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function View({ snapshot, step }: ViewProps<GraphModel>) {
   const pos = useForceLayout(snapshot);
+  const [showLists, setShowLists] = useState(false);
   if (snapshot.vertices.length === 0) {
     return <div className="stage-inner"><div className="stage-empty">(empty graph — add vertices, or press Random)</div></div>;
   }
@@ -95,9 +137,12 @@ export function View({ snapshot, step }: ViewProps<GraphModel>) {
           ))}
         </div>
       )}
-      <div className="stage-caption">
-        Adjacency-list graph — solid arrowheads mark directed edges. Highlighted edges form the traversal tree.
+      <div className="lists-toggle-row">
+        <button type="button" className="lists-toggle" aria-expanded={showLists} onClick={() => setShowLists(s => !s)}>
+          {showLists ? 'hide' : 'show'} adjacency list + edge list
+        </button>
       </div>
+      {showLists && <GraphLists m={snapshot} step={step} />}
     </div>
   );
 }

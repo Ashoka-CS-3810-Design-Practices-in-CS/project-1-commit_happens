@@ -62,7 +62,6 @@ export function Inspector(props: Props) {
                 </tbody>
               </table>
             )}
-            <p className="fineprint">Only accepted operations are logged — rejected input never mutates the structure.</p>
           </>
         )}
 
@@ -87,7 +86,6 @@ export function Inspector(props: Props) {
                 })}
               </div>
             )}
-            <p className="fineprint">The highlighted line follows the current playback step.</p>
           </>
         )}
 
@@ -123,7 +121,6 @@ export function Inspector(props: Props) {
                 ))}
               </tbody>
             </table>
-            <p className="fineprint">Worst-case bounds are properties of the algorithm — a static lookup, never measured from one run.</p>
           </>
         )}
       </div>
