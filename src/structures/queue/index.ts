@@ -9,7 +9,7 @@ export const queueModule: StructureModule<QueueModel> = {
   title: 'Queue',
   tag: 'FIFO_PIPE',
   category: 'linear',
-  blurb: 'Circular buffer, first in first out. Front and rear are just indices.',
+  blurb: 'A line where items join at the back and leave from the front. The first item in is the first out, like a queue at a ticket counter',
   chips: ['FIFO', 'enqueue / dequeue', 'ring buffer'],
   headline: 'O(1)',
   create,
