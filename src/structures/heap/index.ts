@@ -9,7 +9,7 @@ export const heapModule: StructureModule<HeapModel> = {
   title: 'Priority Queue',
   tag: 'MIN_HEAP',
   category: 'tree',
-  blurb: 'Binary min-heap in a flat array. Every sift swap is one animation step.',
+  blurb: 'A queue where the smallest value always leaves first, not the oldest. It is stored as a min-heap.',
   chips: ['binary heap', 'extract-min', 'flat buffer'],
   headline: 'O(log N)',
   create,
